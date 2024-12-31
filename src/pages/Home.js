@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const Home = () => {
+  const { user } = useContext(AuthContext);
+
   return (
-    <div>
+    <div style={{ textAlign: "center", marginTop: "20px" }}>
       <h1>Welcome to BiteRoll</h1>
-      <p>Discover and save your favorite restaurants!</p>
+      {user ? (
+        <p>
+          Welcome back, <strong>{user.username}</strong>! Start discovering and
+          saving your favorite restaurants.
+        </p>
+      ) : (
+        <p>Discover and save your favorite restaurants!</p>
+      )}
     </div>
   );
 };
