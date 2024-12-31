@@ -1,22 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Container, Typography, Button } from "@mui/material";
-import { fetchData } from "./api";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Search from "./pages/Search";
+import Header from "./components/Header";
 
 function App() {
-  const [data, setData] = useState("");
-
-  useEffect(() => {
-    fetchData().then((response) => setData(response.data));
-  }, []);
-
   return (
-    <Container>
-      <Typography variant="h3">BiteRoll</Typography>
-      <Typography variant="body1">{data}</Typography>
-      <Button variant="contained" color="primary">
-        Explore
-      </Button>
-    </Container>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/search" element={<Search />} />
+      </Routes>
+    </Router>
   );
 }
 
