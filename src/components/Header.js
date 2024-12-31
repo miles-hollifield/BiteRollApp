@@ -15,6 +15,12 @@ const Header = () => {
         <Button color="inherit" component={Link} to="/search">
           Search
         </Button>
+        <Button color="inherit" component={Link} to="/favorites">
+          Favorites
+        </Button>
+        <Button color="inherit" component={Link} to="/sets">
+          Sets
+        </Button>
       </Toolbar>
     </AppBar>
   );
