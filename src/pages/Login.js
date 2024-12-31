@@ -9,14 +9,27 @@ const Login = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
     try {
-      const token = "dummy-token"; // Replace with real API response token
-      login(token);
-      navigate("/home");
+      const response = await fetch("http://localhost:8000/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        login(data.access_token); // Save token to AuthContext and localStorage
+        navigate("/"); // Redirect to the home page after login
+      } else {
+        const errorData = await response.json();
+        alert(errorData.detail || "Invalid credentials");
+      }
     } catch (error) {
-      console.error("Login failed:", error.response?.data?.detail || error.message);
+      console.error("Login failed:", error);
+      alert("An error occurred during login. Please try again.");
     }
   };
 

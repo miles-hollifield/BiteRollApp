@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -8,17 +7,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Check for existing session (e.g., in localStorage or via API)
     const token = localStorage.getItem("token");
     if (token) {
       setIsAuthenticated(true);
-      setUser({ username: "testuser" }); // Example user data
+      // Optionally fetch user details here using the token
     }
   }, []);
 
-  const login = (userData, token) => {
+  const login = (token) => {
     setIsAuthenticated(true);
-    setUser(userData);
     localStorage.setItem("token", token);
   };
 
@@ -29,14 +26,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated,
-        user,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
       {children}
     </AuthContext.Provider>
   );
