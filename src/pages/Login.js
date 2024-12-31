@@ -21,7 +21,8 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        login(data.access_token); // Save token to AuthContext and localStorage
+        login(data.access_token); // Save the token to AuthContext and localStorage
+        localStorage.setItem("access_token", data.access_token); // Store the token in localStorage for persistence
         navigate("/"); // Redirect to the home page after login
       } else {
         const errorData = await response.json();

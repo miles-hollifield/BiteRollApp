@@ -1,26 +1,52 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Profile = () => {
-  const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const token = localStorage.getItem("access_token"); // Match the key used in AuthContext and Login.js
+        if (!token) {
+          throw new Error("No token found. Please log in.");
+        }
+  
+        const response = await axios.get("http://localhost:8000/users/me", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+        });
+  
+        setUser(response.data); // Update user state with the profile data
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+  
+    fetchUserProfile();
+  }, []);
+  
 
   if (!user) {
     return <p>Loading...</p>;
   }
 
   return (
-    <div className="profile-container">
-      <h2>Welcome, {user.firstname}!</h2>
-      <p>Username: {user.username}</p>
-      <p>Email: {user.email}</p>
-      <button onClick={handleLogout}>Logout</button>
+    <div>
+      <h1>Profile</h1>
+      <p>
+        <strong>First Name:</strong> {user.firstname}
+      </p>
+      <p>
+        <strong>Last Name:</strong> {user.lastname}
+      </p>
+      <p>
+        <strong>Username:</strong> {user.username}
+      </p>
+      <p>
+        <strong>Email:</strong> {user.email}
+      </p>
     </div>
   );
 };

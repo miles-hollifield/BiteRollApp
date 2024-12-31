@@ -8,9 +8,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
-    navigate("/login"); // Redirect to login after logout
+    logout(); // Clear authentication state
+    setTimeout(() => navigate("/login"), 0); // Redirect to login after logout
   };
+  
 
   return (
     <AppBar position="static">
@@ -32,6 +33,9 @@ const Header = () => {
             </Button>
             <Button color="inherit" component={Link} to="/sets">
               Sets
+            </Button>
+            <Button color="inherit" component={Link} to="/profile">
+              Profile
             </Button>
             <Button color="inherit" onClick={handleLogout}>
               Logout
